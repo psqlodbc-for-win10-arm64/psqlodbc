@@ -60,7 +60,7 @@ Param(
 [ValidateSet("Build", "Rebuild", "Clean", "info")]
 [string]$Target="Build",
 [string]$VCVersion,
-[ValidateSet("Win32", "x64", "both")]
+[ValidateSet("Win32", "x64", "both", "arm64")]
 [string]$Platform="both",
 [string]$Toolset,
 [ValidateSet("", "4.0", "12.0", "14.0")]
@@ -76,6 +76,8 @@ function buildPlatform([xml]$configInfo, [string]$Platform)
 {
 	if ($Platform -ieq "x64") {
 		$platinfo=$configInfo.Configuration.x64
+	} elseif ($Platform -ieq "arm64") {
+		$platinfo=$configInfo.Configuration.arm64
 	} else {
 		$platinfo=$configInfo.Configuration.x86
 	}
@@ -176,6 +178,15 @@ try {
 #
 	if ($recordResult -and ($Platform -ieq "x64" -or $Platform -ieq "both")) {
 		buildPlatform $configInfo "x64"
+		if ($LastExitCode -ne 0) {
+			$recordResult = $false
+		}
+	}
+#
+#	build arm64 64bit dlls
+#
+	if ($recordResult -and ($Platform -ieq "arm64")) {
+		buildPlatform $configInfo "arm64"
 		if ($LastExitCode -ne 0) {
 			$recordResult = $false
 		}

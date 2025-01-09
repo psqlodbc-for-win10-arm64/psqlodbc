@@ -18,6 +18,14 @@
   <?define CIDSMD = "{22288E09-B3B6-4181-907F-676099C20125}" ?>
   <?define UPGCOD = "24BCA538-75A2-4a7f-B236-C99EFC2145DE" ?>
   <?define ALLUSERS = "1" ?>
+<?elseif $(sys.BUILDARCH) = arm64 ?>
+  <?define Platform = "arm64" ?>
+  <?define PKGNAME = "psqlODBC" ?>
+  <?define CIDREG = "85f0c5bf-b294-4439-8999-e154e3f9e1fc" ?>
+  <?define CIDDOC = "1daba33e-fd4a-43f5-b1e4-2e300b05c525" ?>
+  <?define CIDSMD = "{fc2b6ea7-88c9-45d7-ae6f-b68cb6496a5d}" ?>
+  <?define UPGCOD = "8a102a80-7440-4ffd-99ce-f3661374da6d" ?>
+  <?define ALLUSERS = "1" ?>
 <?else?><!-- sys.BUILDARCH -->
   <?error Invalid build architecture ?>
 <?endif?>

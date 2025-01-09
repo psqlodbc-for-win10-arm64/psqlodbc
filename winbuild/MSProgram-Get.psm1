@@ -126,6 +126,7 @@ function Find-MSBuild
 				}
 			}
 		}
+		$msbuildexe = "H:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Msbuild\\Current\\Bin\\amd64\\MSBuild.exe"
 		if ("$msbuildexe" -eq "") {
 			throw "MSBuild ToolsVersion ${toolsnum}.0 not Found"
 		}

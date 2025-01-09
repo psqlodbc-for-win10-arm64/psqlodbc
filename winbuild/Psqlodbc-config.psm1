@@ -106,6 +106,8 @@ function getPGDir([xml]$configInfo, [string]$Platform, [string]$kind)
 {
 	if ($Platform -ieq "x64") {
 		$platinfo=$configInfo.Configuration.x64
+	} elseif ($Platform -ieq "arm64") {
+		$platinfo=$configInfo.Configuration.arm64
 	} else {
 		$platinfo=$configInfo.Configuration.x86
 	}

@@ -31,6 +31,15 @@
 <?else?>
   <?define SysFolder = "$(env.SystemRoot)\system32" ?>
 <?endif?>
+<?elseif $(sys.BUILDARCH) = arm64 ?>
+  <?define Platform = "arm64" ?>
+  <?define ModuleName = "psqlODBC" ?>
+  <?define BIT64 = "yes" ?>
+  <?define ANSIFOLDER = "arm64_ANSI_Release" ?>
+  <?define UNICODEFOLDER = "arm64_Unicode_Release" ?>
+  <?define Module_PackageId = "F4112CB0-A64F-4CF5-98E4-2772018EEA2F" ?>
+  <?define InstallerVersion = "150" ?>
+  <?define SysFolder = "$(env.SystemRoot)\system32" ?>
 <?else?><!-- sys.BUILDARCH -->
   <?error Invalid build architecture ?>
 <?endif?>
@@ -132,6 +141,14 @@
 <?endif ?>
 <?if "$(LIBPQMEM9)" != "" ?>
     <File Source="$(LIBPQBINDIR)\$(LIBPQMEM9)" />
+<?endif ?>
+
+    <!-- openssl -->
+<?if $(sys.BUILDARCH) = arm64 ?>
+<?if "$(env.OPENSSLBINDIR)" != "" ?>
+    <File Source="$(env.OPENSSLBINDIR)\libcrypto-3-arm64.dll" />
+    <File Source="$(env.OPENSSLBINDIR)\libssl-3-arm64.dll" />
+<?endif ?>
 <?endif ?>
 
     <!-- MSDTC runs in 64bit mode on 64bit machines and 32bit mode on

@@ -31,7 +31,7 @@
 #	build 32bit and/or 64bit installers
 #
 Param(
-[ValidateSet("x86", "x64", "both")]
+[ValidateSet("x86", "x64", "arm64", "both")]
 [string]$cpu="both",
 [switch]$AlongWithDrivers,
 [switch]$ExcludeRuntime,
@@ -269,7 +269,7 @@ function buildInstaller([string]$CPUTYPE)
 		Write-Host ".`nBuilding psqlODBC/$SUBLOC merge module..."
 		$BINBASE = GetObjbase ".."
 		$INSTBASE = GetObjbase ".\$CPUTYPE" "installer\$CPUTYPE"
-		wix build --nologo -arch $CPUTYPE $libpqRelArgs -d "VERSION=$VERSION" -d "SUBLOC=$SUBLOC" -d "LIBPQBINDIR=$LIBPQBINDIR" -d "LIBPQMSVCDLL=$LIBPQMSVCDLL" -d "LIBPQMSVCSYS=$LIBPQMSVCSYS" -d "PODBCMSVCDLL=$PODBCMSVCDLL" -d "PODBCMSVPDLL=$PODBCMSVPDLL" -d "PODBCMSVCSYS=$PODBCMSVCSYS" -d "PODBCMSVPSYS=$PODBCMSVPSYS" -d "NoPDB=$NoPDB" -d "BINBASE=$BINBASE" -o $INSTBASE\psqlodbc_$CPUTYPE.msm psqlodbcm_cpu.wxs
+		wix build --nologo -arch $CPUTYPE $libpqRelArgs -d "VERSION=$VERSION" -d "SUBLOC=$SUBLOC" -d "LIBPQBINDIR=$LIBPQBINDIR" -d "LIBPQMSVCDLL=$LIBPQMSVCDLL" -d "LIBPQMSVCSYS=$LIBPQMSVCSYS" -d "PODBCMSVCDLL=$PODBCMSVCDLL" -d "PODBCMSVPDLL=$PODBCMSVPDLL" -d "PODBCMSVCSYS=$PODBCMSVCSYS" -d "PODBCMSVPSYS=$PODBCMSVPSYS" -d "NoPDB=$NoPDB" -d "BINBASE=$BINBASE" -d "OPENSSLBINDIR=$OPENSSLBINDIR" -o $INSTBASE\psqlodbc_$CPUTYPE.msm psqlodbcm_cpu.wxs
 		if ($LASTEXITCODE -ne 0) {
 			throw "Failed to build merge module"
 		}
