@@ -13,6 +13,10 @@
       <Configuration>Debug</Configuration>
       <Platform>arm64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|arm64ec">
+      <Configuration>Debug</Configuration>
+      <Platform>arm64ec</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -24,6 +28,10 @@
     <ProjectConfiguration Include="Release|arm64">
       <Configuration>Release</Configuration>
       <Platform>arm64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|arm64ec">
+      <Configuration>Release</Configuration>
+      <Platform>arm64ec</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -54,6 +62,14 @@
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64ec'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <!-- GenerateImportLib>true</GenerateImportLib -->
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <BuildAsX>true</BuildAsX>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <!-- GenerateImportLib>true</GenerateImportLib -->
@@ -71,6 +87,15 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <!-- GenerateImportLib>true</GenerateImportLib -->
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <BuildAsX>true</BuildAsX>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64ec'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <!-- GenerateImportLib>true</GenerateImportLib -->
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -128,6 +153,9 @@
   <PropertyGroup Condition="'$(Platform)'=='arm64'">
     <TARGET_CPU>arm64</TARGET_CPU>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='arm64ec'">
+    <TARGET_CPU>arm64ec</TARGET_CPU>
+  </PropertyGroup>
 
   <PropertyGroup Condition="'$(BuildStep)'==''">
     <GenerateImportLib>false</GenerateImportLib>
@@ -149,6 +177,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64ec'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
@@ -156,6 +187,9 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64ec'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
 
@@ -264,6 +298,39 @@
       </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64ec'">
+    <ClCompile>
+      <PreprocessorDefinitions>DYNAMIC_LOAD;_HANDLE_ENLIST_IN_DTC_;WIN_MULTITHREAD_SUPPORT;$(ADD_DEFINES);_CRT_SECURE_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;PSQLSETUP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>$(RSC_DEFINES);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
+      <TargetMachine>MachineARM64EC</TargetMachine>
+      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </ImpLib>
+    <Link>
+      <DelayLoadDLLs>$(DELAY_LOAD_DLLS);%(DelayLoadDLLs)</DelayLoadDLLs>
+      <AdditionalDependencies>$(CALL_LIB);winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+    </Link>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>DYNAMIC_LOAD;_HANDLE_ENLIST_IN_DTC_;WIN_MULTITHREAD_SUPPORT;$(ADD_DEFINES);_CRT_SECURE_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;PSQLSETUP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -324,6 +391,31 @@
     </ResourceCompile>
     <ImpLib Condition="'$(GenerateImportLib)'=='true'">
       <TargetMachine>MachineARM64</TargetMachine>
+      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </ImpLib>
+    <Link>
+      <DelayLoadDLLs>$(DELAY_LOAD_DLLS);%(DelayLoadDLLs)</DelayLoadDLLs>
+      <AdditionalDependencies>$(CALL_LIB);winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+    </Link>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64ec'">
+    <ClCompile>
+      <PreprocessorDefinitions>DYNAMIC_LOAD;_HANDLE_ENLIST_IN_DTC_;WIN_MULTITHREAD_SUPPORT;$(ADD_DEFINES);_CRT_SECURE_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;PSQLSETUP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>$(RSC_DEFINES);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
+      <TargetMachine>MachineARM64EC</TargetMachine>
       <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
       <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
