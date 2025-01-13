@@ -329,11 +329,6 @@
     <ClCompile>
       <PreprocessorDefinitions>_HANDLE_ENLIST_IN_DTC_;_CRT_SECURE_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;PGENLIST_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
-      <TargetMachine>MachineARM64X</TargetMachine>
-      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </ImpLib>
     <Link>
       <DelayLoadDLLs>XOLEHLP.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalDependencies>xolehlp.lib;$(Drivername).lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -348,11 +343,6 @@
     <ClCompile>
       <PreprocessorDefinitions>_HANDLE_ENLIST_IN_DTC_;_CRT_SECURE_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;PGENLIST_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
-      <TargetMachine>MachineARM64EC</TargetMachine>
-      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </ImpLib>
     <Link>
       <DelayLoadDLLs>XOLEHLP.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalDependencies>xolehlp.lib;$(Drivername).lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -362,12 +352,6 @@
       <Command>
       </Command>
     </PreLinkEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(GenerateImportLib)'=='true'">
-    <Link>
-      <ModuleDefinitionFile></ModuleDefinitionFile>
-      <AdditionalDependencies>$(TargetName).exp;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

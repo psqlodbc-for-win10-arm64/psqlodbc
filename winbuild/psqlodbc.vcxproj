@@ -187,6 +187,7 @@
   <PropertyGroup Condition="'$(MSDTC)'=='yes'">
     <ADD_DEFINES>$(ADD_DEFINES);_HANDLE_ENLIST_IN_DTC_</ADD_DEFINES>
     <DELAY_LOAD_DLLS>$(DELAY_LOAD_DLLS);$(DTCDLL).dll</DELAY_LOAD_DLLS>
+    <CALL_LIB>$(CALL_LIB);$(DTCDLL).lib</CALL_LIB>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
