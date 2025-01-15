@@ -42,21 +42,18 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <GenerateImportLib>true</GenerateImportLib>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <GenerateImportLib>true</GenerateImportLib>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <GenerateImportLib>true</GenerateImportLib>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -64,14 +61,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64ec'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <GenerateImportLib>true</GenerateImportLib>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <GenerateImportLib>true</GenerateImportLib>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -79,7 +74,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <GenerateImportLib>true</GenerateImportLib>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -87,7 +81,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <GenerateImportLib>true</GenerateImportLib>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -96,7 +89,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64ec'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <GenerateImportLib>true</GenerateImportLib>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -183,11 +175,6 @@
     <ClCompile>
       <PreprocessorDefinitions>_HANDLE_ENLIST_IN_DTC_;_CRT_SECURE_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;PGENLIST_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
-      <TargetMachine>MachineX86</TargetMachine>
-      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </ImpLib>
     <Link>
       <DelayLoadDLLs>XOLEHLP.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalDependencies>xolehlp.lib;$(Drivername).lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -210,11 +197,6 @@
     <ClCompile>
       <PreprocessorDefinitions>_HANDLE_ENLIST_IN_DTC_;_CRT_SECURE_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;PGENLIST_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
-      <TargetMachine>MachineX64</TargetMachine>
-      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </ImpLib>
     <Link>
       <DelayLoadDLLs>XOLEHLP.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalDependencies>xolehlp.lib;$(Drivername).lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -237,11 +219,6 @@
     <ClCompile>
       <PreprocessorDefinitions>_HANDLE_ENLIST_IN_DTC_;_CRT_SECURE_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;PGENLIST_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
-      <TargetMachine>MachineARM64X</TargetMachine>
-      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </ImpLib>
     <Link>
       <DelayLoadDLLs>XOLEHLP.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalDependencies>xolehlp.lib;$(Drivername).lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -264,11 +241,6 @@
     <ClCompile>
       <PreprocessorDefinitions>_HANDLE_ENLIST_IN_DTC_;_CRT_SECURE_NO_DEPRECATE;WIN32;_DEBUG;_WINDOWS;_USRDLL;PGENLIST_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
-      <TargetMachine>MachineARM64EC</TargetMachine>
-      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </ImpLib>
     <Link>
       <DelayLoadDLLs>XOLEHLP.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalDependencies>xolehlp.lib;$(Drivername).lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -291,11 +263,6 @@
     <ClCompile>
       <PreprocessorDefinitions>_HANDLE_ENLIST_IN_DTC_;_CRT_SECURE_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;PGENLIST_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
-      <TargetMachine>MachineX86</TargetMachine>
-      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </ImpLib>
     <Link>
       <DelayLoadDLLs>XOLEHLP.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalDependencies>xolehlp.lib;$(DriverName).lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -310,11 +277,6 @@
     <ClCompile>
       <PreprocessorDefinitions>_HANDLE_ENLIST_IN_DTC_;_CRT_SECURE_NO_DEPRECATE;WIN32;NDEBUG;_WINDOWS;_USRDLL;PGENLIST_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ImpLib Condition="'$(GenerateImportLib)'=='true'">
-      <TargetMachine>MachineX64</TargetMachine>
-      <ModuleDefinitionFile>$(srcPath)$(targetName).def</ModuleDefinitionFile>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </ImpLib>
     <Link>
       <DelayLoadDLLs>XOLEHLP.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalDependencies>xolehlp.lib;$(Drivername).lib;%(AdditionalDependencies)</AdditionalDependencies>
