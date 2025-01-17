@@ -32,7 +32,7 @@
   <?define SysFolder = "$(env.SystemRoot)\system32" ?>
 <?endif?>
 <?elseif $(sys.BUILDARCH) = arm64 ?>
-  <?define Platform = "arm64" ?>
+  <?define Platform = "x64" ?>
   <?define ModuleName = "psqlODBC" ?>
   <?define BIT64 = "yes" ?>
   <?define ANSIFOLDER = "arm64_ANSI_Release" ?>
