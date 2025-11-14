@@ -85,13 +85,17 @@ jobs:
       working-directory: PgBuilder
       run: dotnet build --no-restore
 
-    - name: Build psqlodbc Arm64X binaries
+    - name: Complete psqlodbc Arm64X binaries and a setup
       working-directory: psqlodbc
       shell: cmd
       run: |
         call "%APPLY_VCVARS%"
 
+        REM Workaround due to designation of `$(LIBPQBINDIR)\\$(LIBPQMEM0)`
         copy openssl\bin\*.dll postgres\bin\
+
+        REM Workaround due to designation of `<?if $(env.PROCESSOR_ARCHITECTURE) = "AMD64" ?>`
+        mklink /d C:\Windows\sysnative C:\Windows\system32
 
         dotnet run --project "%GITHUB_WORKSPACE%/PgBuilder/PgBuilder/PgBuilder.csproj" --no-build /p:Platform="AnyCPU"  -- psqlodbc-arm64x-batch-build ^
          --batch-build-root "%GITHUB_WORKSPACE%/psqlodbc-build-root" ^
