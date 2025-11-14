@@ -92,7 +92,7 @@ jobs:
         call "%APPLY_VCVARS%"
 
         REM Workaround due to designation of `$(LIBPQBINDIR)\\$(LIBPQMEM0)`
-        copy openssl\bin\*.dll postgres\bin\
+        copy "%GITHUB_WORKSPACE%\openssl\bin\*.dll" "%GITHUB_WORKSPACE%\postgres\bin"
 
         REM Workaround due to designation of `<?if $(env.PROCESSOR_ARCHITECTURE) = "AMD64" ?>`
         mklink /d C:\Windows\sysnative C:\Windows\system32
