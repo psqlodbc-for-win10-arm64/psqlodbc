@@ -75,6 +75,7 @@ jobs:
       with:
         repository: psqlodbc-for-win10-arm64/PgBuilder
         path: PgBuilder
+        submodules: true
 
     - name: PgBuilder Restore dependencies
       working-directory: PgBuilder
