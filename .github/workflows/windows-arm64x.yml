@@ -149,15 +149,11 @@ jobs:
         Check-ExecutableType "${env:GITHUB_WORKSPACE}/psqlodbc-build-root/BINBASE/x64_Unicode_Release/pgxalib.dll"     "Arm64X"
         Check-ExecutableType "${env:GITHUB_WORKSPACE}/psqlodbc-build-root/BINBASE/x64_Unicode_Release/psqlodbc35w.dll" "Arm64X"
 
-    - name: Create gh-release dir
-      shell: pwsh
-      run: mkdir gh-release
-
     - name: Make a GitHub Release
       uses: xresloader/upload-to-github-release@v1.6.1
       with:
         default_release_name: 'REL-${{ env.RELEASE_VERSION }} (Arm64X)'
-        file: gh-release/*.msi;gh-release/*.msm
+        file: psqlodbc-build-root/INSTBASE/*.msi;psqlodbc-build-root/INSTBASE/*.msm
         draft: false
         prerelease: true
         verbose: true
