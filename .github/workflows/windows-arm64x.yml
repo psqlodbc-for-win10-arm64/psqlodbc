@@ -1,0 +1,159 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: MSBuild
+
+on:
+  push:
+    branches: [ "REL-*-fix-for-arm64" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: .
+
+  RELEASE_VERSION: "18_00_0002-SNAPSHOT"
+  FULL_VERSION:    "18_00_0002-SNAPSHOT"
+  SUBLOC:          "1800"
+
+  APPLY_VCVARS: 'C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvarsarm64.bat'
+  MSVCTargetBuildToolsBin: 'C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/HostARM64/arm64'
+
+permissions:
+  contents: write # allows the action to create a release. For more information, see [Permissions required for GitHub Apps](https://docs.github.com/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-contents).
+
+jobs:
+  world:
+    runs-on: windows-11-arm
+
+    steps:
+    - name: Deploy postgresql-18.6-SNAPSHOT-windows-arm64x
+      shell: pwsh
+      run: |
+        curl -OLs https://github.com/psqlodbc-for-win10-arm64/postgres/releases/download/Branch_REL_18_6-4c6c248e/postgresql-18.6-SNAPSHOT-windows-arm64x.zip
+        unzip -q postgresql-18.6-SNAPSHOT-windows-arm64x.zip -d postgres
+
+    - name: Deploy Win64Arm64XOpenSSL-3.6.4
+      shell: pwsh
+      run: |
+        curl -OLs https://github.com/psqlodbc-for-win10-arm64/openssl/releases/download/Branch_openssl-3.6.4-52e812ce/Win64Arm64XOpenSSL-3_6_4-SNAPSHOT.zip
+        unzip -q Win64Arm64XOpenSSL-3_6_4-SNAPSHOT.zip -d openssl
+
+    - uses: actions/checkout@v5
+      with:
+        path: psqlodbc
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install WiX
+      shell: cmd
+      run: |
+        REM https://github.com/postgresql-interfaces/psqlodbc/blob/main/.github/workflows/main.yml
+        dotnet tool install --global wix
+        wix extension add --global WixToolset.UI.wixext/6.0.0
+
+    - uses: actions/checkout@v5.0.0
+      name: Toolings checkout
+      with:
+        repository: psqlodbc-for-win10-arm64/Toolings
+        path: Toolings
+
+    - name: Toolings Restore dependencies
+      working-directory: Toolings
+      run: dotnet restore
+
+    - name: Toolings Build
+      working-directory: Toolings
+      run: dotnet build --no-restore
+
+    - uses: actions/checkout@v5.0.0
+      name: PgBuilder checkout
+      with:
+        repository: psqlodbc-for-win10-arm64/PgBuilder
+        path: PgBuilder
+        submodules: true
+
+    - name: PgBuilder Restore dependencies
+      working-directory: PgBuilder
+      run: dotnet restore
+
+    - name: PgBuilder Build
+      working-directory: PgBuilder
+      run: dotnet build --no-restore
+
+    - name: Complete psqlodbc Arm64X binaries and a setup
+      working-directory: psqlodbc
+      shell: cmd
+      run: |
+        call "%APPLY_VCVARS%"
+
+        REM Workaround due to designation of `$(LIBPQBINDIR)\\$(LIBPQMEM0)`
+        copy "%GITHUB_WORKSPACE%\openssl\bin\*.dll" "%GITHUB_WORKSPACE%\postgres\bin"
+
+        REM Workaround due to designation of `<?if $(env.PROCESSOR_ARCHITECTURE) = "AMD64" ?>`
+        mklink /d C:\Windows\sysnative C:\Windows\system32
+
+        dotnet run --project "%GITHUB_WORKSPACE%/PgBuilder/PgBuilder/PgBuilder.csproj" --no-build /p:Platform="AnyCPU"  -- psqlodbc-arm64x-batch-build ^
+         --batch-build-root "%GITHUB_WORKSPACE%/psqlodbc-build-root" ^
+         --cmake "cmake.exe" ^
+         --msbuild "msbuild.exe" ^
+         --wix "wix.exe" ^
+         --pg-inc "%GITHUB_WORKSPACE%/postgres/include" ^
+         --pg-lib "%GITHUB_WORKSPACE%/postgres/lib" ^
+         --LIBPQBINDIR "%GITHUB_WORKSPACE%/postgres/bin" ^
+         --LIBPQMEM ^
+         "libcrypto-3-arm64.dll" ^
+         "libssl-3-arm64.dll" ^
+         --full-version "%FULL_VERSION%" ^
+         --subloc "%SUBLOC%" ^
+         "%GITHUB_WORKSPACE%/psqlodbc"
+
+    - name: Ensure binaries are Arm64X
+      shell: pwsh
+      run: |
+        # function is written with the help of gpt-4o-mini:
+        function Check-ExecutableType {
+            param (
+                [string]$ExePath,                  # The path to the executable file
+                [string]$ExpectedFileType          # The expected file type (for example, "X64" or "ARM64")
+            )
+
+            # Check if the executable exists
+            if (-Not (Test-Path $ExePath)) {
+                throw "The executable at '$ExePath' does not exist."
+            }
+
+            # Execute the IsArm64x command and get the output
+            $isArm64xPath = "${env:GITHUB_WORKSPACE}/Toolings/IsArm64x/bin/Debug/net8.0/IsArm64x.dll"
+            $output = & dotnet $isArm64xPath $ExePath
+
+            # Trim the output to remove trailing whitespace/newlines
+            $actualFileType = $output.Trim()
+
+            # Compare actual output with expected file type
+            if ($actualFileType -ne $ExpectedFileType) {
+                throw "Expected file type '$ExpectedFileType', but got '$actualFileType'."
+            }
+
+            # Return a success message if the types match
+            return "The executable '$ExePath' is of type '$actualFileType', as expected."
+        }
+
+        Check-ExecutableType "${env:GITHUB_WORKSPACE}/psqlodbc-build-root/BINBASE/x64_ANSI_Release/pgenlista.dll"      "Arm64X"
+        Check-ExecutableType "${env:GITHUB_WORKSPACE}/psqlodbc-build-root/BINBASE/x64_ANSI_Release/psqlodbc30a.dll"    "Arm64X"
+        Check-ExecutableType "${env:GITHUB_WORKSPACE}/psqlodbc-build-root/BINBASE/x64_Unicode_Release/pgenlist.dll"    "Arm64X"
+        Check-ExecutableType "${env:GITHUB_WORKSPACE}/psqlodbc-build-root/BINBASE/x64_Unicode_Release/pgxalib.dll"     "Arm64X"
+        Check-ExecutableType "${env:GITHUB_WORKSPACE}/psqlodbc-build-root/BINBASE/x64_Unicode_Release/psqlodbc35w.dll" "Arm64X"
+
+    - name: Make a GitHub Release
+      uses: xresloader/upload-to-github-release@v1.6.1
+      with:
+        default_release_name: 'REL-${{ env.RELEASE_VERSION }} (Arm64X)'
+        file: psqlodbc-build-root/INSTBASE/*.msi;psqlodbc-build-root/INSTBASE/*.msm
+        draft: false
+        prerelease: true
+        verbose: true
