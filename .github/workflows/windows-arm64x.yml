@@ -13,8 +13,8 @@ env:
   # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: .
 
-  RELEASE_VERSION: "18.00.0002-SNAPSHOT"
-  FULL_VERSION:    "18_00_0002-SNAPSHOT"
+  RELEASE_VERSION: "18_00_0002-SNAPSHOT"
+  FULL_VERSION:    "18.00.0002-SNAPSHOT"
   SUBLOC:          "1800"
 
   APPLY_VCVARS: 'C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvarsarm64.bat'
