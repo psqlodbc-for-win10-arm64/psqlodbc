@@ -53,8 +53,8 @@ jobs:
       shell: cmd
       run: |
         REM https://github.com/postgresql-interfaces/psqlodbc/blob/main/.github/workflows/main.yml
-        dotnet tool install --global wix --version 6.0.2
-        wix extension add --global WixToolset.UI.wixext/6.0.0
+        dotnet tool install --global wix --version 5.0.2
+        wix extension add --global WixToolset.UI.wixext/5.0.2
 
     - uses: actions/checkout@v5.0.0
       name: Toolings checkout
